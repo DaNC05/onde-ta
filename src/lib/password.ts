@@ -21,9 +21,12 @@ export function getPasswordStrength(password: string) {
   const number = /[0-9]/.test(password)
   const symbol = /[^A-Za-z0-9]/.test(password)
   
-  const score = [lower, upper, number, symbol].filter(Boolean).length
+  const typeScore = [lower, upper, number, symbol].filter(Boolean).length
+  const lengthBonus = password.length >= 12 ? 1 : password.length >= 8 ? 0.5 : 0
+  const totalScore = typeScore + lengthBonus
 
-  if (score === 4) {
+  // Forte: 4 tipos + comprimento adequado, ou 3 tipos com 12+ caracteres
+  if (totalScore >= 4) {
     return {
       valid: true,
       level: "forte",
@@ -32,29 +35,22 @@ export function getPasswordStrength(password: string) {
     }
   }
 
-  if (score === 3) {
+  // Média: 3 tipos, ou 2 tipos com 12+ caracteres
+  if (totalScore >= 3) {
     return {
       valid: false,
       level: "media",
       progress: 66,
-      message: "Senha média. Use letras maiúsculas, minúsculas, números e símbolos.",
+      message: "Senha média. Adicione mais complexidade ou comprimento.",
     }
   }
 
-  if (score === 2) {
-    return {
-      valid: false,
-      level: "fraca",
-      progress: 33,
-      message: "Senha fraca. Misture maiúsculas, minúsculas, números e símbolos.",
-    }
-  }
-
+  // Fraca: 1-2 tipos
   return {
     valid: false,
-    level: "vazia",
-    progress: 0,
-    message: "Digite uma senha com letras, números e símbolos.",
+    level: "fraca",
+    progress: 33,
+    message: "Senha fraca. Misture maiúsculas, minúsculas, números e símbolos.",
   }
 }
 
