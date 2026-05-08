@@ -1,3 +1,4 @@
+import { FavoriteOrders } from "@/components/layout/favoriteorders";
 import { Orders } from "@/components/layout/orders";
 import { QuickTrack } from "@/components/layout/quicktrack";
 import { Card, CardContent } from "@/components/ui/card";
@@ -70,6 +71,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="col-span-1 flex flex-col gap-8">
                     <QuickTrack />
+                    <FavoriteOrders />
                 </div>
             </div>
         </div >
